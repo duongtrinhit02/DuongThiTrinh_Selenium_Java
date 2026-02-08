@@ -50,7 +50,7 @@
               <ul>
                 <li>
                   <a href="#" panel-name="test-xml-Default_suite" class="navigator-link ">
-                    <span>C:\Users\duong\AppData\Local\Temp\testng-eclipse-1558920290\testng-customsuite.xml</span>
+                    <span>C:\Users\duong\AppData\Local\Temp\testng-eclipse--1582615726\testng-customsuite.xml</span>
                   </a> <!-- navigator-link  -->
                 </li>
                 <li>
@@ -103,7 +103,7 @@
                     <div class="method-list-content failed suite-Default_suite">
                       <span>
                         <img src="failed.png" width="3%"/>
-                        <a href="#" panel-name="suite-Default_suite" title="Railway.LoginTest" class="method navigator-link" hash-for-method="TC04">TC04</a> <!-- method navigator-link -->
+                        <a href="#" panel-name="suite-Default_suite" title="Railway.ResetPassword" class="method navigator-link" hash-for-method="TC10">TC10</a> <!-- method navigator-link -->
                       </span>
                       <br/>
                     </div> <!-- method-list-content failed suite-Default_suite -->
@@ -121,33 +121,34 @@
           <div class="suite-Default_suite-class-failed">
             <div class="main-panel-header rounded-window-top">
               <img src="failed.png"/>
-              <span class="class-name">Railway.LoginTest</span>
+              <span class="class-name">Railway.ResetPassword</span>
             </div> <!-- main-panel-header rounded-window-top -->
             <div class="main-panel-content rounded-window-bottom">
               <div class="method">
                 <div class="method-content">
-                  <a name="TC04">
-                  </a> <!-- TC04 -->
-                  <span class="method-name">TC04</span>
-                  <div class="stack-trace">java.lang.AssertionError: Error message is not displayed as expected expected [4 out of 5 login attempts, Warning message is not displayed] but found [Invalid username or password. Please try again.]
+                  <a name="TC10">
+                  </a> <!-- TC10 -->
+                  <span class="method-name">TC10</span>
+                  <div class="stack-trace">java.lang.AssertionError: expected [4PIL7nLRCOJU25LvnkiXXg%3D%3D] but found [4PIL7nLRCOJU25LvnkiXXg==]
 	at org.testng.Assert.fail(Assert.java:111)
 	at org.testng.Assert.failNotEquals(Assert.java:1590)
 	at org.testng.Assert.assertEqualsImpl(Assert.java:150)
 	at org.testng.Assert.assertEquals(Assert.java:132)
 	at org.testng.Assert.assertEquals(Assert.java:656)
-	at Railway.LoginTest.TC04(LoginTest.java:100)
+	at org.testng.Assert.assertEquals(Assert.java:666)
+	at Railway.ResetPassword.TC10(ResetPassword.java:92)
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
 	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
-	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:697)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:687)
 	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
 	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
-	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:1005)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:995)
 	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
 	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
 	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
-	at org.testng.TestRunner.privateRun(TestRunner.java:744)
+	at org.testng.TestRunner.privateRun(TestRunner.java:741)
 	at org.testng.TestRunner.run(TestRunner.java:616)
 	at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
 	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
@@ -171,7 +172,7 @@
         </div> <!-- panel Default_suite -->
         <div panel-name="test-xml-Default_suite" class="panel">
           <div class="main-panel-header rounded-window-top">
-            <span class="header-content">C:\Users\duong\AppData\Local\Temp\testng-eclipse-1558920290\testng-customsuite.xml</span>
+            <span class="header-content">C:\Users\duong\AppData\Local\Temp\testng-eclipse--1582615726\testng-customsuite.xml</span>
           </div> <!-- main-panel-header rounded-window-top -->
           <div class="main-panel-content rounded-window-bottom">
             <pre>
@@ -180,11 +181,11 @@
 &lt;suite name=&quot;Default suite&quot; guice-stage=&quot;DEVELOPMENT&quot;&gt;
   &lt;test thread-count=&quot;5&quot; name=&quot;Default test&quot; verbose=&quot;2&quot;&gt;
     &lt;classes&gt;
-      &lt;class name=&quot;Railway.LoginTest&quot;&gt;
+      &lt;class name=&quot;Railway.ResetPassword&quot;&gt;
         &lt;methods&gt;
-          &lt;include name=&quot;TC04&quot;/&gt;
+          &lt;include name=&quot;TC10&quot;/&gt;
         &lt;/methods&gt;
-      &lt;/class&gt; &lt;!-- Railway.LoginTest --&gt;
+      &lt;/class&gt; &lt;!-- Railway.ResetPassword --&gt;
     &lt;/classes&gt;
   &lt;/test&gt; &lt;!-- Default test --&gt;
 &lt;/suite&gt; &lt;!-- Default suite --&gt;
@@ -226,14 +227,14 @@ data.addColumn('string', 'Class');
 data.addColumn('number', 'Time (ms)');
 data.addRows(1);
 data.setCell(0, 0, 0)
-data.setCell(0, 1, 'TC04')
-data.setCell(0, 2, 'Railway.LoginTest')
-data.setCell(0, 3, 9326);
+data.setCell(0, 1, 'TC10')
+data.setCell(0, 2, 'Railway.ResetPassword')
+data.setCell(0, 3, 47502);
 window.suiteTableData['Default_suite']= { tableData: data, tableDiv: 'times-div-Default_suite'}
 return data;
 }
               </script>
-              <span class="suite-total-time">Total running time: 9 seconds</span>
+              <span class="suite-total-time">Total running time: 47 seconds</span>
               <div id="times-div-Default_suite">
               </div> <!-- times-div-Default_suite -->
             </div> <!-- times-div -->
@@ -248,22 +249,9 @@ return data;
         </div> <!-- panel -->
         <div panel-name="ignored-methods-Default_suite" class="panel">
           <div class="main-panel-header rounded-window-top">
-            <span class="header-content">4 ignored methods</span>
+            <span class="header-content">0 ignored methods</span>
           </div> <!-- main-panel-header rounded-window-top -->
           <div class="main-panel-content rounded-window-bottom">
-            <div class="ignored-class-div">
-              <span class="ignored-class-name">Railway.LoginTest</span>
-              <div class="ignored-methods-div">
-                <span class="ignored-method-name">TC02</span>
-                <br/>
-                <span class="ignored-method-name">TC01</span>
-                <br/>
-                <span class="ignored-method-name">TC03</span>
-                <br/>
-                <span class="ignored-method-name">TC05</span>
-                <br/>
-              </div> <!-- ignored-methods-div -->
-            </div> <!-- ignored-class-div -->
           </div> <!-- main-panel-content rounded-window-bottom -->
         </div> <!-- panel -->
         <div panel-name="chronological-Default_suite" class="panel">
@@ -272,7 +260,7 @@ return data;
           </div> <!-- main-panel-header rounded-window-top -->
           <div class="main-panel-content rounded-window-bottom">
             <div class="chronological-class">
-              <div class="chronological-class-name">Railway.LoginTest</div> <!-- chronological-class-name -->
+              <div class="chronological-class-name">Railway.ResetPassword</div> <!-- chronological-class-name -->
               <div class="configuration-method before">
                 <span class="method-name">beforeMethod</span>
                 <span class="method-start">0 ms</span>
@@ -280,12 +268,12 @@ return data;
               <div class="test-method">
                 <img src="failed.png">
                 </img>
-                <span class="method-name">TC04</span>
-                <span class="method-start">1275 ms</span>
+                <span class="method-name">TC10</span>
+                <span class="method-start">2677 ms</span>
               </div> <!-- test-method -->
               <div class="configuration-method after">
                 <span class="method-name">afterMethod</span>
-                <span class="method-start">10605 ms</span>
+                <span class="method-start">50185 ms</span>
               </div> <!-- configuration-method after -->
           </div> <!-- main-panel-content rounded-window-bottom -->
         </div> <!-- panel -->

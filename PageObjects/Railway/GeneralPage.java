@@ -1,46 +1,60 @@
 package Railway;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
-import Constant.Constant;
+import Common.Utilities;
+import Menu.MenuRailway;
 
 public class GeneralPage {
 
-	private final By tabLogin = By.xpath("//div[@id='menu']//a[@href='/Account/Login.cshtml']");
-	private final By tabLogout = By.xpath("//div[@id='menu']//a[@href='/Account/Logout']");
-	private final By lblWelcomeMessage = By.xpath("//div[@class='account']/strong");
-	private final By lblLoginErrorMsg = By.xpath("//p[@class='message error LoginForm']");
-	
-	protected WebElement getTabLogin() {
-		return Constant.WEBDRIVER.findElement(tabLogin);
-	}
-	
-	protected WebElement getTabLogout() {
-		return Constant.WEBDRIVER.findElement(tabLogout);
-	}
+    //Locators
+    private final By tabLoginBy = By.xpath("//div[@id='menu']//a/span[text()='Login']");
+    private final By tabLogOutBy = By.xpath("//div[@id='menu']//a[@href='/Account/Logout']");
+    private final By tabWelcomMessage = By.xpath("//div[@class='account']/strong");
+    private final String tabMenuString = "//div[@id='menu']//a[normalize-space()='%s']";
+    private final By lbTitleBy = By.xpath("//h1[@align='center']");
 
-	protected WebElement getLbWelcomeMessage() {
-		return Constant.WEBDRIVER.findElement(lblWelcomeMessage);
-	}
-	protected WebElement getLblErrorMessage() {
-		return Constant.WEBDRIVER.findElement(lblLoginErrorMsg);
-	}
-	
-	
-	public String getWelcomeMessage()
-	{
-		return this.getLbWelcomeMessage().getText();
-		
-	}
-	
-	public String getErrorMessage() {
-		return this.getLblErrorMessage().getText();
-	}
-	
-	public LoginPage gotoLoginPage()
-	{
-		this.getTabLogin().click();
-		return new LoginPage();
-	}
+    //Protected locators for child pages
+    protected By getTabWelcomMessageBy() {
+        return tabWelcomMessage;
+    }
+
+    protected By getTabLogOutBy() {
+        return tabLogOutBy;
+    }
+
+    protected By getTabLoginBy() {
+        return tabLoginBy;
+    }
+
+    //Login status
+    public boolean isUserLoggedIn() {
+        return Utilities.isElementDisplayed(tabLogOutBy);
+    }
+
+    public void logoutIfLoggedIn() {
+        if (isUserLoggedIn()) {
+            Utilities.waitForClickable(tabLogOutBy);
+            Utilities.getElement(tabLogOutBy).click();
+        }
+    }
+
+    //User info
+    public String getWelcomMessage() {
+        Utilities.waitForVisible(this.tabWelcomMessage);
+        return Utilities.getElement(this.tabWelcomMessage).getAttribute("textContent");
+    }
+
+    //Menu navigation
+    public GeneralPage navigateMenu(MenuRailway menu) {
+        By menuBy = By.xpath(String.format(this.tabMenuString, menu.getText()));
+        Utilities.waitForClickable(menuBy);
+        Utilities.getElement(menuBy).click();
+        return PageFactoryManager.getPage(menu.getPageClass());
+    }
+
+    //Page title
+    public String getTitle() {
+        return Utilities.getText(this.lbTitleBy);
+    }
 }
