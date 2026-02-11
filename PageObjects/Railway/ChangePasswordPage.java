@@ -6,36 +6,46 @@ import org.openqa.selenium.WebElement;
 import Common.Utilities;
 
 public class ChangePasswordPage extends GeneralPage{
-	private final By txtEmailBy = By.xpath("//input[@id='email']");
-	private final By txtSendInStructionBy = By.xpath("//input[@type='submit']");
-	
+	private final By txtEmail = By.xpath("//input[@id='email']");
+	private final By txtSendInStruction = By.xpath("//input[@type='submit']");
 	private final By txtNewPasswordBy = By.xpath("//input[@id='newPassword']");
-	private final By txtConfirmPasswordBy = By.xpath("//input[@id='confirmPassword']");
-	private final By btnResetPasswordBy = By.xpath("//input[@type='submit' and @title='Reset password']");
-	
-	private final By lbMessageChangePasswordBy = By.xpath("//P[@class='message success']");
-	private final By txtTokenResetPasswordBy = By.xpath("//input[@id='resetToken']");
+	private final By txtConfirmPassword = By.xpath("//input[@id='confirmPassword']");
+	private final By btnResetPassword = By.xpath("//input[@type='submit' and @title='Reset password']");
+	private final By lbMessageChangePassword = By.xpath("//P[@class='message success']");
+	private final By txtTokenResetPassword = By.xpath("//input[@id='resetToken']");
+	private final By lbConfirmPasswordError = By.xpath("//span[contains(@class,'field-validation-error')]");
+	private final By lbResetPasswordFormError = By.xpath("//p[contains(@class,'message') and contains(@class,'error')]");
+
 	
 	public void setEmailForgotPassword(String email) {
-		Utilities.clearAndType(this.txtEmailBy, email);
-		Utilities.click(this.txtSendInStructionBy);
+		Utilities.clearAndType(this.txtEmail, email);
+		Utilities.click(this.txtSendInStruction);
 	}
 	
 	public void setPasswordChangeForm(String password, String confirmPassword) {
 		Utilities.clearAndType(this.txtNewPasswordBy, password);
-		Utilities.clearAndType(this.txtConfirmPasswordBy, confirmPassword);
-		Utilities.click(this.btnResetPasswordBy);
+		Utilities.clearAndType(this.txtConfirmPassword, confirmPassword);
+		Utilities.click(this.btnResetPassword);
 	}
 	
 	public String getLbMessageChangePassword() {
-		return Utilities.getText(this.lbMessageChangePasswordBy);
+		return Utilities.getText(this.lbMessageChangePassword);
 	}
 	
 	public String getInputTokenPasswordString() {
-		return Utilities.getAttribute(this.txtTokenResetPasswordBy, "value");
+		return Utilities.getAttribute(this.txtTokenResetPassword, "value");
 	}
 	
 	public WebElement getInputTokenPasswordElement() {
-		return Utilities.getElement(this.txtTokenResetPasswordBy);
+		return Utilities.getElement(this.txtTokenResetPassword);
 	}
+	
+	public String getErrorConfirmPassword() {
+	    return Utilities.getText(lbConfirmPasswordError);
+	}
+	
+	public String getResetPasswordFormError() {
+	    return Utilities.getText(lbResetPasswordFormError);
+	}
+	
 }

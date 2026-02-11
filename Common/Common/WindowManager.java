@@ -20,24 +20,23 @@ public class WindowManager {
 
     //SAVE / SWITCH BY NAME
 
-    public static void saveWindow(String name, WebDriver webDriver) {
+    public static void saveWindow(String name, WebDriver webDriver) 
+    {
         windowMap.put(name, webDriver.getWindowHandle());
     }
 
-    public static void switchToTab(String name) {
+    public static void switchToTab(String name) 
+    {
         String handle = windowMap.get(name);
-
         if (handle == null) {
-            throw new RuntimeException("No window found with name: " + name);
+        	throw new RuntimeException("No window found with name: " + name);
         }
-
         Constant.WEBDRIVER.switchTo().window(handle);
     }
 
 
-    //SWITCH BY TITLE
-
-    public static void switchToWindowByTitle(String expectedTitle) {
+    public static void switchToWindowByTitle(String expectedTitle)
+    {
         for (String handle : Constant.WEBDRIVER.getWindowHandles()) {
             Constant.WEBDRIVER.switchTo().window(handle);
             if (Constant.WEBDRIVER.getTitle().equals(expectedTitle)) {
@@ -48,12 +47,11 @@ public class WindowManager {
     }
 
 
-    //CREATE NEW TAB 
-
-    public static WebDriver newTab(String tabName) {
-        WebDriver webDriver =
-                Constant.WEBDRIVER.switchTo().newWindow(WindowType.TAB);
+    public static WebDriver newTab(String tabName)
+    {
+        WebDriver webDriver = Constant.WEBDRIVER.switchTo().newWindow(WindowType.TAB);
         saveWindow(tabName, webDriver);
         return webDriver;
     }
+    
 }

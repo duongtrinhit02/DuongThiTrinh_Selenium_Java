@@ -3,6 +3,7 @@ package Railway;
 import org.openqa.selenium.By;
 
 import Common.Utilities;
+import Constant.Constant;
 import Menu.MenuRailway;
 
 public class GeneralPage {
@@ -57,4 +58,9 @@ public class GeneralPage {
     public String getTitle() {
         return Utilities.getText(this.lbTitleBy);
     }
+    
+    public void openRailway() {
+    	Utilities.getUrl(Constant.RAIWAY_URL);
+    }
+    
 }

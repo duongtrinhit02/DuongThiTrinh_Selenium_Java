@@ -25,6 +25,11 @@ public class HomePage extends GeneralPage {
         Utilities.waitForVisible(this.lbTitle);
         return Utilities.getElement(this.lbTitle).getAttribute("textContent");
     }
+    
+    public LoginPage goToLoginPage() {
+        return (LoginPage) navigateMenu(MenuRailway.LOGIN);
+    }
+
 
     //Actions
     public RegisterPage clickBtnCreateAccount() {
