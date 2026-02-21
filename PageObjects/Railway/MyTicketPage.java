@@ -3,62 +3,54 @@ package Railway;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import Account.Ticket;
 import Common.Utilities;
-import Account.BookTicketData;
 
 public class MyTicketPage extends GeneralPage {
 
-    private By tabMyTicket = By.xpath("//a[span[normalize-space()='My ticket']]");
+    /* ===================== LOCATORS ===================== */
 
-    public MyTicketPage clickTabMyTicket() 
-    {
-        Utilities.click(tabMyTicket);
-        return new MyTicketPage();
-    }
+    private final By tabMyTicket = By.xpath("//a[span[normalize-space()='My ticket']]");
+    private final By btnCancelTicket = By.xpath("//tr[@class='OddRow']/descendant::input[@type='button']");
 
-    private By getTicketRowLocator(BookTicketData data) 
-    {
+
+    /* ===================== PRIVATE METHODS ===================== */
+
+    private By getTicketRowLocator(Ticket data) {
+
+        String departDate = Utilities.getFutureDate(data.getDepartDate());
+
         String xpath = String.format(
                 "//table[@class='MyTable']//tr" +
-                "[td[normalize-space()='%s']]" +
-                "[td[normalize-space()='%s']]" +
-                "[td[normalize-space()='%s']]" +
-                "[td[normalize-space()='%s']]" +
-                "[td[normalize-space()='%s']]",
-                data.getDepartFrom().getValue(),
-                data.getArriveAt().getValue(),
-                data.getSeatType().getValue(),
-                data.getDepartDate(),
-                data.getTicketAmount().getValue()
+                        "[td[normalize-space()='%s']]" +
+                        "[td[normalize-space()='%s']]" +
+                        "[td[normalize-space()='%s']]" +
+                        "[td[normalize-space()='%s']]" +
+                        "[td[normalize-space()='%s']]",
+                data.getDepartStation(),
+                data.getArriveStation(),
+                data.getSeatType(),
+                departDate,
+                String.valueOf(data.getAmount())
         );
 
         return By.xpath(xpath);
     }
 
-    public void clickCancelButton(BookTicketData data)
-    {
-        WebElement row = Utilities.getElement(getTicketRowLocator(data));
-        row.findElement(By.xpath(".//input[@value='Cancel']")).click();
+
+    /* ===================== BUSINESS METHODS ===================== */
+
+    public MyTicketPage clickTabMyTicket() {
+        Utilities.click(tabMyTicket);
+        return new MyTicketPage();
     }
 
-    public boolean isTicketDisplayed(BookTicketData data) 
-    {
-
-        String xpath = String.format(
-                "//table[@class='MyTable']//tr" +
-                "[td[normalize-space()='%s']]" +
-                "[td[normalize-space()='%s']]" +
-                "[td[normalize-space()='%s']]" +
-                "[td[normalize-space()='%s']]" +
-                "[td[normalize-space()='%s']]",
-                data.getDepartFrom().getValue(),
-                data.getArriveAt().getValue(),
-                data.getSeatType().getValue(),
-                data.getDepartDate(),
-                data.getTicketAmount().getValue()
-        );
-
-        return Utilities.findElements(By.xpath(xpath)).size() > 0;
+    public void clickCancelButton() {
+        WebElement cancelElement = Utilities.waitForElementVisible(btnCancelTicket);
+        cancelElement.click();
     }
-    
+
+    public boolean isTicketDisplayed(Ticket data) {
+        return Utilities.findElements(getTicketRowLocator(data)).size() > 0;
+    }
 }

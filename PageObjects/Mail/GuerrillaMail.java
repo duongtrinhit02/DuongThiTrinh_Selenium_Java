@@ -7,7 +7,7 @@ import Common.Utilities;
 import Common.WindowManager;
 import Constant.Constant;
 
-public class RandomMail {
+public class GuerrillaMail {
 
     // ===== LOCATORS =====
     private final By lbIdEmailBy = By.xpath("//span[@id='inbox-id']");
@@ -50,7 +50,7 @@ public class RandomMail {
     }
 
     // ===== NAVIGATION =====
-    public RandomMail open() {
+    public GuerrillaMail open() {
         Constant.WEBDRIVER.navigate().to(Constant.RANDOMMAIL_URL);
         WindowManager.saveWindow(Constant.WINDOW_TAB_MAIL, Constant.WEBDRIVER);
         return this;

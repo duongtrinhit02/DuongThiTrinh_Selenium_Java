@@ -6,7 +6,7 @@ import Common.RandomString;
 import Common.Utilities;
 import Common.WindowManager;
 import Constant.Constant;
-import Mail.RandomMail;
+import Mail.GuerrillaMail;
 import Menu.MenuRailway;
 
 import org.testng.Assert;
@@ -36,6 +36,7 @@ public class RegisterTest extends BaseTest {
         String actualMessage = registerPage.getErrorMessage();
         String expectedMessage = Constant.REGISTER_MESSAGE_ERROR_DUPLICAP_MAIL;
         Assert.assertEquals(actualMessage.trim(), expectedMessage.trim());
+    	
     }
 
     @Test
@@ -44,7 +45,7 @@ public class RegisterTest extends BaseTest {
         System.out.println("TC08 - User can't create account while password and PID fields are empty");
         String email = RandomString.generateRandomString(Constant.DEFAULT_EMAIL_LENGTH);
         Account account = new Account(email, "", "");
-        RandomMail randomMail = new RandomMail();
+        GuerrillaMail randomMail = new GuerrillaMail();
         randomMail.open();
         randomMail.setGuerrillaMail(account.getEmail());
         account.setEmail(randomMail.getGmail());
@@ -76,7 +77,7 @@ public class RegisterTest extends BaseTest {
         System.out.println("TC09 - User create and activate account");
         System.out.println("Create mail account");
         Account account = Account.generalAccount();
-        RandomMail randomMail = new RandomMail();
+        GuerrillaMail randomMail = new GuerrillaMail();
         randomMail.open();
         randomMail.setGuerrillaMail(account.getEmail());
         account.setEmail(randomMail.getGmail());

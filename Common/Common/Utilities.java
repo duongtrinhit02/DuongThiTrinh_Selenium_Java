@@ -154,6 +154,17 @@ public class Utilities {
         return waitFluent.until(driver -> driver.findElement(locator));
     }
     
+    public static WebElement waitForElementVisible(By locator) {
+        WebDriverWait wait = new WebDriverWait(Constant.WEBDRIVER, Duration.ofSeconds(10));
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+    }
+
+    public static WebElement waitForElementClickable(WebElement element) {
+        WebDriverWait wait = new WebDriverWait(Constant.WEBDRIVER, Duration.ofSeconds(10));
+        return wait.until(ExpectedConditions.elementToBeClickable(element));
+    }
+
+    
     // ===== CLEAR / TYPE =====
     public static void clearAndType(WebElement element, String content) 
     {

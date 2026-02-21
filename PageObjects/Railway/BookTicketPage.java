@@ -1,114 +1,183 @@
 package Railway;
 
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import org.openqa.selenium.*;
-import org.openqa.selenium.support.ui.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-import Account.BookTicketData;
+import Account.Ticket;
 import Common.Utilities;
 import Constant.Constant;
 
 public class BookTicketPage extends GeneralPage {
 
-    private By ddlDepartFrom   = By.name("DepartStation");
-    private By ddlArriveAt     = By.name("ArriveStation");
-    private By ddlSeatType     = By.name("SeatType");
-    private By ddlDepartDate   = By.name("Date");
-    private By ddlTicketAmount = By.name("TicketAmount");
-    private By btnBookTicket   = By.cssSelector("input[value='Book ticket']");
-    private By lblSuccessMsg   = By.xpath("//h1[contains(text(),'Ticket booked successfully')]");
+    /* ===================== LOCATORS ===================== */
 
-    private Select getDateSelect()
-    {
-        WebDriverWait wait = new WebDriverWait(Constant.WEBDRIVER, Duration.ofSeconds(Constant.DEFAULT_TIMEOUT));
+    private final By ddlDepartFrom   = By.name("DepartStation");
+    private final By ddlArriveAt     = By.name("ArriveStation");
+    private final By ddlSeatType     = By.name("SeatType");
+    private final By ddlDepartDate   = By.name("Date");
+    private final By ddlTicketAmount = By.name("TicketAmount");
+    private final By btnBookTicket   = By.cssSelector("input[value='Book ticket']");
+    private final By lblSuccessMsg   = By.xpath("//h1[contains(text(),'Ticket booked successfully')]");
+
+    private final WebDriverWait wait =
+            new WebDriverWait(Constant.WEBDRIVER, Duration.ofSeconds(10));
+
+    private static final DateTimeFormatter DATE_FORMAT =
+            DateTimeFormatter.ofPattern("M/d/yyyy");
+
+    private String bookedDate;
+
+
+    /* ===================== PRIVATE METHODS ===================== */
+
+    private String calculateFromDropdown(int plusDays) {
+
+        Select select = new Select(
+                Constant.WEBDRIVER.findElement(ddlDepartDate));
+
+        String defaultDate =
+                select.getFirstSelectedOption().getText().trim();
+
+        LocalDate date =
+                LocalDate.parse(defaultDate, DATE_FORMAT);
+
+        return date.plusDays(plusDays).format(DATE_FORMAT);
+    }
+
+
+    public void selectTomorrowDate() {
+
+        bookedDate = LocalDate.now()
+                .plusDays(1)
+                .format(DATE_FORMAT);
+
+        Utilities.selectDropdownByVisibleText(
+                ddlDepartDate, bookedDate);
+    }
+
+    private void selectDepartStation(String station) {
+
+        WebElement oldArriveDropdown =
+                Constant.WEBDRIVER.findElement(ddlArriveAt);
+
+        Select depart =
+                new Select(Constant.WEBDRIVER.findElement(ddlDepartFrom));
+        depart.selectByVisibleText(station);
+
+        wait.until(ExpectedConditions.stalenessOf(oldArriveDropdown));
+        wait.until(ExpectedConditions.presenceOfElementLocated(ddlArriveAt));
+    }
+
+    private void selectArriveStation(String station) {
+
         wait.until(driver -> {
-            Select s = new Select(driver.findElement(ddlDepartDate));
-            return s.getOptions().size() > 1;
+            Select select =
+                    new Select(driver.findElement(ddlArriveAt));
+            return select.getOptions()
+                    .stream()
+                    .anyMatch(opt ->
+                            opt.getText().trim().equals(station));
         });
 
-        return new Select(Utilities.getElement(ddlDepartDate));
-    }
+        Select arrive =
+                new Select(Constant.WEBDRIVER.findElement(ddlArriveAt));
+        arrive.selectByVisibleText(station);
 
-    private String getDepartDatePlusDays(int plusDays)
-    {
-        Select select = getDateSelect();
-        List<WebElement> options = select.getOptions();
-        int currentIndex = select.getOptions()
-                                 .indexOf(select.getFirstSelectedOption());
-        int targetIndex = currentIndex + plusDays;
-        if (targetIndex >= options.size()) {
-            throw new RuntimeException("Not enough future dates");
+        String selected =
+                arrive.getFirstSelectedOption().getText().trim();
+
+        if (!selected.equals(station)) {
+            throw new RuntimeException(
+                    "Arrive station was NOT selected correctly!");
         }
-        return options.get(targetIndex).getText().trim();
     }
 
-    public String selectTomorrowDepartDate() {
 
-        String tomorrow = Utilities.getTomorrowDate("M/d/yyyy");
-        Utilities.selectDropdownByVisibleText( ddlDepartDate, tomorrow ); 
-        return tomorrow;
-    }
+    /* ===================== BUSINESS METHODS ===================== */
 
-    public String bookTicket(BookTicketData data, int plusDays) 
-    {
+    public void bookTicket(Ticket data) {
 
-        // Select Depart
-        Utilities.selectDropdownByVisibleText(ddlDepartFrom,data.getDepartFrom().getValue());
-        // Wait Arrive refresh
-        Utilities.waitUntilDropdownHasOption( ddlArriveAt,data.getArriveAt().getValue());
-        // Select Arrive
-        Utilities.selectDropdownByVisibleText(ddlArriveAt, data.getArriveAt().getValue());
-        // Select Date
-        String departDate = getDepartDatePlusDays(plusDays);
-        Utilities.selectDropdownByVisibleText(ddlDepartDate, departDate);
-        data.setDepartDate(departDate);
-        // Select Seat
-        Utilities.selectDropdownByVisibleText(ddlSeatType,data.getSeatType().getValue());
-        // Select Amount
-        Utilities.selectDropdownByVisibleText(ddlTicketAmount,data.getTicketAmount().getValue());
+        if (bookedDate == null) {
+
+            bookedDate = calculateFromDropdown(data.getDepartDate());
+
+            Utilities.selectDropdownByVisibleText(
+                    ddlDepartDate, bookedDate);
+        }
+
+        selectDepartStation(data.getDepartStation());
+        selectArriveStation(data.getArriveStation());
+
+        Utilities.selectDropdownByVisibleText(
+                ddlSeatType, data.getSeatType());
+
+        Utilities.selectDropdownByVisibleText(
+                ddlTicketAmount,
+                String.valueOf(data.getAmount()));
+
         Utilities.click(btnBookTicket);
-
-        return departDate;
-    }
-    
-    public String getSelectedDepartFrom()
-    {
-        return new Select(Utilities.getElement(ddlDepartFrom))
-                .getFirstSelectedOption()
-                .getText();
     }
 
-    public String getSelectedArriveAt()
-    {
-        return new Select(Utilities.getElement(ddlArriveAt))
-                .getFirstSelectedOption()
-                .getText();
+    public boolean isBookTicketSuccess() {
+
+        return wait.until(
+                ExpectedConditions.visibilityOfElementLocated(
+                        lblSuccessMsg))
+                .isDisplayed();
     }
 
+    public boolean isTicketRowDisplayed(Ticket data) {
 
-    public boolean isBookTicketSuccess()
-    {
-        return Utilities.waitForVisible(lblSuccessMsg).isDisplayed();
-    }
+        System.out.println("=========== VERIFY BOOKED TICKET ===========");
 
-    public boolean verifyBookedTicketInfo(BookTicketData data)
-    {
+        System.out.println("EXPECTED:");
+        System.out.println("Depart Station : " + data.getDepartStation());
+        System.out.println("Arrive Station : " + data.getArriveStation());
+        System.out.println("Seat Type      : " + data.getSeatType());
+        System.out.println("Depart Date    : " + bookedDate);
+        System.out.println("Amount         : " + data.getAmount());
+        System.out.println("============================================");
 
-        String xpath = String.format(
-                "//table[@class='MyTable WideTable']//tr" +
-                "[td[normalize-space()='%s']]" +
-                "[td[normalize-space()='%s']]" +
-                "[td[normalize-space()='%s']]" +
-                "[td[normalize-space()='%s']]" +
-                "[td[normalize-space()='%s']]",
-                data.getArriveAt().getValue(),
-                data.getSeatType().getValue(),
-                data.getDepartDate(),
-                data.getTicketAmount().getValue()
-        );
+        List<WebElement> rows =
+                Constant.WEBDRIVER.findElements(
+                        By.xpath("//table[@class='MyTable WideTable']//tr[td]")
+                );
 
-        return Constant.WEBDRIVER.findElements(By.xpath(xpath)).size() > 0;
+        int index = 1;
+
+        for (WebElement row : rows) {
+
+            String rowText = row.getText();
+
+            System.out.println("----- ROW " + index + " -----");
+            System.out.println(rowText);
+            System.out.println("-----------------------------");
+
+            boolean match =
+                    rowText.contains(data.getDepartStation()) &&
+                    rowText.contains(data.getArriveStation()) &&
+                    rowText.contains(data.getSeatType()) &&
+                    rowText.contains(bookedDate) &&
+                    rowText.contains(String.valueOf(data.getAmount()));
+
+            if (match) {
+                System.out.println("MATCH FOUND at row " + index);
+                return true;
+            }
+
+            index++;
+        }
+
+        System.out.println("NO MATCH FOUND");
+
+        return false;
     }
 }

@@ -14,11 +14,7 @@ import Constant.Constant;
  */
 public class WindowManager {
 
-    // Store window handles by name
     private static Map<String, String> windowMap = new HashMap<>();
-
-
-    //SAVE / SWITCH BY NAME
 
     public static void saveWindow(String name, WebDriver webDriver) 
     {

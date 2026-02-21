@@ -14,14 +14,13 @@ import Common.RandomString;
 import Common.Utilities;
 import Common.WindowManager;
 import Constant.Constant;
-import Mail.RandomMail;
+import Mail.GuerrillaMail;
 import Menu.MenuRailway;
 
 public class ResetPassword extends BaseTest {
 	
 	@Test
 	public void TC10() {
-
 	    System.out.println("TC10 - Reset password shows error if the new password is same as current");
 	    System.out.println("Pre-condition: an activated account is existing");
 	    Account account = AccountHelper.createAndActivateAccount();
@@ -42,7 +41,7 @@ public class ResetPassword extends BaseTest {
 	    System.out.println( "Step 6: Open email with subject contaning \"Please reset your password\" and the email of the account at step 3");
 	    System.out.println( "Step 7: Click on reset link");
 	    WindowManager.switchToTab(Constant.WINDOW_TAB_MAIL);
-	    RandomMail randomMail = new RandomMail();
+	    GuerrillaMail randomMail = new GuerrillaMail();
 	    randomMail.getBackToInboxElement().click();
 	    String resetLink = randomMail.getLinkResetPassword();
 	    WindowManager.switchToTab(Constant.WINDOW_TAB_RAILWAY);
@@ -94,7 +93,7 @@ public class ResetPassword extends BaseTest {
 	    System.out.println( "Step 6: Open email with subject contaning \"Please reset your password\" and the email of the account at step 3");
 	    System.out.println( "Step 7: Click on reset link");
 	    WindowManager.switchToTab(Constant.WINDOW_TAB_MAIL);
-	    RandomMail randomMail = new RandomMail();
+	    GuerrillaMail randomMail = new GuerrillaMail();
 	    randomMail.getBackToInboxElement().click();
 	    String resetLink = randomMail.getLinkResetPassword();
 	    WindowManager.switchToTab(Constant.WINDOW_TAB_RAILWAY);

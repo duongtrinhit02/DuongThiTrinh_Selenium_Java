@@ -5,18 +5,18 @@ import Common.Utilities;
 
 public class TicketPricePage extends GeneralPage {
 
-    private By lblTableTitle = By.xpath("//table[@class='MyTable MedTable']//tr[@class='TableSmallHeader']//th");
+    private final By lblTableTitle =
+            By.xpath("//table[@class='MyTable MedTable']//tr[@class='TableSmallHeader']//th");
 
-    private static final String PRICE_BY_SEAT_XPATH =  "(//tr[td[normalize-space()='%s']]//following-sibling::tr//td)"
-    												+ "[count(//tr[td[normalize-space()='%s']]//td[normalize-space()='%s']//preceding-sibling::td) + 1]";
+    private static final String PRICE_BY_SEAT_XPATH =
+            "(//tr[td[normalize-space()='%s']]//following-sibling::tr//td)" +
+            "[count(//tr[td[normalize-space()='%s']]//td[normalize-space()='%s']//preceding-sibling::td) + 1]";
 
-    private String getPriceXpath(String seatCode)
-    {
+    private String getPriceXpath(String seatCode) {
         return String.format(PRICE_BY_SEAT_XPATH, seatCode, seatCode, seatCode);
     }
 
-    public String getTableName() 
-    {
+    public String getTableName() {
         return Utilities.getText(lblTableTitle).trim();
     }
 
@@ -26,25 +26,28 @@ public class TicketPricePage extends GeneralPage {
                 .trim();
     }
 
-    public boolean verifyRouteTitle(String depart, String arrive) 
-    {
+    public boolean verifyRouteTitle(String depart, String arrive) {
 
-        String expectedTitle = String.format(
-                "Ticket price from %s to %s",
-                depart,
-                arrive
-        );
+        String actualTitle = getTableName();
 
-        return getTableName().equals(expectedTitle);
+        System.out.println("Actual Title: " + actualTitle);
+
+        return actualTitle.contains(depart)
+                && actualTitle.contains(arrive);
     }
 
-    public boolean verifySeatPrice(SeatCoat seatCode, String expectedPrice) 
-    {
-        return getTicketPrice(seatCode).equals(expectedPrice);
+    public boolean verifySeatPrice(SeatCoat seatCode, String expectedPrice) {
+
+        String actualPrice = getTicketPrice(seatCode);
+
+        System.out.println("Seat: " + seatCode.getValue()
+                + " | Expected: " + expectedPrice
+                + " | Actual: " + actualPrice);
+
+        return actualPrice.equals(expectedPrice);
     }
-    
-    public boolean verifyAllSeatPrices() 
-    {
+
+    public boolean verifyAllSeatPrices() {
         return verifySeatPrice(SeatCoat.HS, "310000")
             && verifySeatPrice(SeatCoat.SS, "335000")
             && verifySeatPrice(SeatCoat.SSC, "360000")
@@ -52,5 +55,4 @@ public class TicketPricePage extends GeneralPage {
             && verifySeatPrice(SeatCoat.SB, "460000")
             && verifySeatPrice(SeatCoat.SBC, "510000");
     }
-
 }

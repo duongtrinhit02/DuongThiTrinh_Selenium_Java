@@ -47,5 +47,7 @@ public class Constant {
     public static final String WINDOW_TAB_MAIL = "mail";
     public static final String WINDOW_TAB_RAILWAY = "railway";
     
+    public static final int TIMEOUT = 30;
+    
  
 }

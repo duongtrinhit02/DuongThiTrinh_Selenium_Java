@@ -29,8 +29,7 @@ public class HomePage extends GeneralPage {
     public LoginPage goToLoginPage() {
         return (LoginPage) navigateMenu(MenuRailway.LOGIN);
     }
-
-
+    
     //Actions
     public RegisterPage clickBtnCreateAccount() {
         Utilities.click(this.btnCreateAccountBy);

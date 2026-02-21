@@ -1,40 +1,38 @@
 package Railway;
 
 import org.openqa.selenium.By;
-import Account.BookTicketData.Station;
 import Common.Utilities;
 
 public class TimetablePage extends GeneralPage {
 
-    private By getCheckPriceLocator(Station depart, Station arrive) 
-    {
-        String xpath = String.format(
-            "//tr[td[normalize-space()='%s'] and td[normalize-space()='%s']]//a[normalize-space()='check price']",
-            depart.getValue(),
-            arrive.getValue()
-        );
+    /* ===================== LOCATOR TEMPLATES ===================== */
 
-        return By.xpath(xpath);
+    private static final String CHECK_PRICE_XPATH =
+            "//tr[td[normalize-space()='%s'] and td[normalize-space()='%s']]//a[normalize-space()='check price']";
+
+    private static final String BOOK_TICKET_XPATH =
+            "//tr[td[normalize-space()='%s'] and td[normalize-space()='%s']]//a[normalize-space()='book ticket']";
+
+
+    /* ===================== PRIVATE METHODS ===================== */
+
+    private By getCheckPriceLocator(String depart, String arrive) {
+        return By.xpath(String.format(CHECK_PRICE_XPATH, depart, arrive));
     }
 
-    private By getBookTicketLocator(Station depart, Station arrive) 
-    {
-
-        String xpath = String.format(
-            "//tr[td[normalize-space()='%s'] and td[normalize-space()='%s']]//a[normalize-space()='book ticket']",
-            depart.getValue(),
-            arrive.getValue()
-        );
-
-        return By.xpath(xpath);
+    private By getBookTicketLocator(String depart, String arrive) {
+        return By.xpath(String.format(BOOK_TICKET_XPATH, depart, arrive));
     }
 
-    public TicketPricePage clickCheckPrice(Station depart, Station arrive) {
+
+    /* ===================== BUSINESS METHODS ===================== */
+
+    public TicketPricePage clickCheckPrice(String depart, String arrive) {
         Utilities.click(getCheckPriceLocator(depart, arrive));
         return new TicketPricePage();
     }
 
-    public BookTicketPage clickBookTicket(Station depart, Station arrive) {
+    public BookTicketPage clickBookTicket(String depart, String arrive) {
         Utilities.click(getBookTicketLocator(depart, arrive));
         return new BookTicketPage();
     }
